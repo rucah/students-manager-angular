@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { finalize } from 'rxjs/operators';
+import { config } from '../configs/config';
 
 @Component({
   selector: 'app-modal',
@@ -8,6 +10,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class ModalComponent {
   data: DialogData;
+  dialog: MatDialogRef<ModalComponent>;
 
   constructor(@Inject(MAT_DIALOG_DATA) dialogData: DialogData) {
     this.data = dialogData;
@@ -32,25 +35,28 @@ export class DialogData {
   get type (): string { return this.type; }
   set type (type: string) { this.type = type; }
 }
-// USAGE
-//
-// import { MatDialog, MatDialogRef } from '@angular/material';
-// import { filter, finalize } from 'rxjs/operators';
-// import { ModalComponent, DialogData } from './modal/modal.component';
-// import { config } from './configs/config';
-//
-// openDialog() : void {
-//   if(!this.dialog) {
-//     this.dialog = this.matdialog.open(ModalComponent, {
-//       ...config.dailog,
-//       data: {
-//         ...config.dailog.data,
-//         message: 'this is a test'
-//       }
-//     });
-//   }
 
-//   this.dialog.afterClosed().pipe(
-//     finalize(() => this.dialog = undefined)
-//   );
-// }
+export class Modal {
+  // data: DialogData;
+  dialog: MatDialogRef<ModalComponent>;
+
+  constructor(public matdialog: MatDialog) {
+  }
+
+  public alert(title, message) : void {
+    if(!this.dialog) {
+      this.dialog = this.matdialog.open(ModalComponent, {
+        ...config.dailog,
+        data: {
+          ...config.dailog.data,
+          title,
+          message
+        }
+      });
+    }
+    // Only one instance onpened at a time
+    this.dialog.afterClosed().pipe(
+      finalize(() => { this.dialog = undefined; })
+    ).subscribe();
+  }
+}

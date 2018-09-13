@@ -6,5 +6,8 @@ export const config = {
             title: 'App-angular 6.0',
             type: 'alert'
         }
-    }
-};
+    },
+    serverUrl: 'http://localhost:3000',
+    loginMinLength: 3,
+    loginMaxLength: 20,
+  };
