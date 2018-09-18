@@ -1,5 +1,20 @@
 # StudentsManagerAngular
 
+## Handy Tools:
+Express: 
+https://www.sitepoint.com/mean-stack-angular-2-angular-cli/
+https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
+
+mysql: 
+https://www.npmjs.com/package/mysql
+https://www.terlici.com/2015/08/13/mysql-node-express.html
+
+Angular material:
+https://github.com/angular/material2
+
+Angular material partial import:
+https://bitsrc.io/angular/material2
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.5.
 
 ## Development server
