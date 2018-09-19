@@ -7,7 +7,7 @@ export const config = {
             type: 'alert'
         }
     },
-    serverUrl: 'http://localhost:3000',
+    serverUrl: 'https://serene-spire-55766.herokuapp.com',
     loginMinLength: 3,
     loginMaxLength: 20,
   };
