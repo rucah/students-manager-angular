@@ -19,7 +19,8 @@ import { LoginComponent } from './login/login.component';
 
 
 const appRoutes = [
-  { path: '', component: LoginComponent }
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent }
 ];
 
 const angularMaterialItems = [
