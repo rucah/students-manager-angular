@@ -10,22 +10,26 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatDialogModule, 
-  MatIconModule
+  MatIconModule, 
+  MatTableModule,
+  MatPaginatorModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { ModalComponent } from './modal/modal.component';
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 
 const appRoutes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent }
 ];
 
 const angularMaterialItems = [
   MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule,
-  MatDialogModule, MatIconModule
+  MatDialogModule, MatIconModule, MatTableModule, MatPaginatorModule,
 ];
 
 @NgModule({
@@ -33,6 +37,7 @@ const angularMaterialItems = [
     AppComponent,
     ModalComponent,
     LoginComponent,
+    HomeComponent,
   ],
   entryComponents: [
     ModalComponent,
