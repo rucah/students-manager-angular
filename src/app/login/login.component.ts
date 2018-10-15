@@ -4,6 +4,7 @@ import { LoginService } from './login.service';
 import { Modal } from '../modal/modal.component';
 import { config } from '../configs/config';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 
 class LoginForm {
   
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
   modal: Modal;
   hide: boolean = true;
 
-  constructor(private loginService: LoginService, public matdialog: MatDialog) { 
+  constructor(private loginService: LoginService, public matdialog: MatDialog, private router: Router) { 
     this.login =  new LoginForm();
     this.modal = new Modal(matdialog);
   }
@@ -49,13 +50,14 @@ export class LoginComponent implements OnInit {
       obs.subscribe((data) => {
             
         if(data['login']) {
-          this.modal.alert('SUCCESS', 'Login SUCCESS')
+          this.router.navigate(['/home']);
         } else {
           this.modal.alert('Erro!', 'Utilizador ou senha inválidos!');
         }
       },(error) => {
           this.modal.alert('Ocorreu um erro!', 'Ocorreu um erro a processar o pedido.' +
-            'Por verifique ligação à rede ou tente mais tarde' )
+            'Por verifique ligação à rede ou tente mais tarde' );
+            console.error('[Login.onSubmit] ', error);
       });
     }
   }
