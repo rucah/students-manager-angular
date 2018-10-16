@@ -35,3 +35,39 @@ td.mat-cell:last-of-type {
     width: 10%;
     text-align: right;
 }
+
+.filterContent {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+}
+
+.filterLabel {
+    font-weight: bold;
+    margin-bottom: 0.7rem;
+}
+.filterContentRow {
+    margin-block-end: 0.5rem;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+.searchButton {
+    margin-top: 1.3rem;
+    width: 100%;
+    text-align: end;
+}
+
+.noResults {
+    margin: 2rem 0 0 0;
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .filterContent {
+        display: flex;
+        flex-flow: column;
+    }
+}

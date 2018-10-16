@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatPaginatorIntl, MatTableDataSource, PageEvent } from '@angular/material';
+import { MatDialog, MatPaginatorIntl, MatTableDataSource, 
+  PageEvent } from '@angular/material';
 import { Modal } from '../modal/modal.component';
-import { Student, StudentFilter, StudentsList } from './home.model';
+import { Student, StudentFilter, StudentsList, Pair } from './home.model';
 import { HomeService } from './home.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
   filter: StudentFilter;
   modal: Modal;
   students: StudentsList;
+  classes: Pair[];
 
   constructor(private homeService: HomeService, matDialog: MatDialog, private matPaginatorIntl: MatPaginatorIntl) {
    
@@ -27,12 +29,12 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.filter.pageSize = 10;
     this.filter.page = 0;
-    this.filter.cluster = null;
     this.matPaginatorIntl.itemsPerPageLabel="Items por pág.";
-    this.getSudents();
+    this.getClasses();
+    this.applySearch();
   }
 
-  getSudents() {
+  applySearch() {
     try {
       this.homeService.getStudents(this.filter).subscribe((students) => {
         this.students = students;
@@ -51,10 +53,21 @@ export class HomeComponent implements OnInit {
   onPageChange(pageEvent: PageEvent) {
     this.filter.page = pageEvent.pageIndex;
     this.filter.pageSize = pageEvent.pageSize;
-    this.getSudents();
+    this.applySearch();
   }
 
   editStudent(id: number) {
     console.log("TODO -> " , id);
+  }
+
+  getClasses(): void {
+    try {
+      this.homeService.getClasses().subscribe((classes) => {
+      this.classes = classes;
+      },(error) => { throw error; });
+    } catch(error) {      
+      this.modal.alert('Ocorreu um erro!', 'Não foi possível processar o pedido!');
+      console.error('[Home.getClasses] ', error);
+    }
   }
 }
