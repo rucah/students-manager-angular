@@ -5,13 +5,9 @@ import { FormsModule, ReactiveFormsModule  }   from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatDialogModule, 
-  MatIconModule, 
-  MatTableModule,
+  MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule,
+  MatInputModule, MatDialogModule, MatIconModule,
+  MatRadioModule, MatSelectModule, MatTableModule,
   MatPaginatorModule
 } from '@angular/material';
 
@@ -28,8 +24,9 @@ const appRoutes = [
 ];
 
 const angularMaterialItems = [
-  MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule,
-  MatDialogModule, MatIconModule, MatTableModule, MatPaginatorModule,
+  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatButtonModule,
+  MatDialogModule, MatRadioModule, MatSelectModule,MatIconModule,
+  MatTableModule, MatPaginatorModule,
 ];
 
 @NgModule({
