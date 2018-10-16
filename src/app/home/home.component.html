@@ -1,29 +1,6 @@
 <mat-card class="mainCard">
-  <mat-card-content class="filterContent">
-    <div class="filterContentRow">
-      <label class="filterLabel" for="cluster">Turmas: </label>
-      <mat-select id="cluster" [(ngModel)]="filter.cluster" placeholder="Escolher turma" multiple>
-        <mat-option *ngFor="let class of classes" value="{{class.value}}">{{class.text}}</mat-option>
-      </mat-select>
-    </div>
-
-    <div class="filterContentRow">
-      <label class="filterLabel" for="musicality">Musicalidade: </label>
-      <mat-select id="musicality" [(ngModel)]="filter.musicality" placeholder="Seleccionar opção">
-          <mat-option>Todos</mat-option>
-          <mat-option value="0">Não</mat-option>
-          <mat-option value=1>Sim</mat-option>
-      </mat-select>
-    </div>
-      
-    <div class="searchButton">
-      <button mat-raised-button color="primary" (click)="applySearch()">Aplicar</button>
-    </div>
-  </mat-card-content>
-  
-  <mat-divider></mat-divider>
-  
-  <mat-card-content class="" *ngIf="dataSource.data.length > 0 else elseBlock">
+ 
+  <mat-card-content class="">
     <table mat-table [dataSource]="dataSource" class="homeTable">
 
       <ng-container matColumnDef="name" class="homeName">
@@ -44,21 +21,21 @@
       </ng-container>
 
       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-stroked-button color="secondary" type="submit" (click)="editStudent(element.id)">Editar</button>
-        </td>
-      </ng-container>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-stroked-button color="secondary" type="submit" (click)="editStudent(element.id)">Editar</button>
+          </td>
+        </ng-container>
+
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
       [length]="students.length"
       [pageSize]="students.pageSize"
       [pageIndex]="students.page"
-      (page)="onPageChange($event)" ></mat-paginator>
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </mat-card-content>
-  <ng-template #elseBlock>
-    <div class="noResults">Sem resultados para os critérios seleccionados!</div>
-  </ng-template>
 </mat-card>

@@ -24,10 +24,10 @@ export interface Student {
 }
 
 export class StudentFilter extends Pagination {
-    cluster: Array<string>;
-    musicality: string;
+    cluster: number;
+    musicality: number;
 
-    constructor(_class: Array<string> = null, musicality: string = null) {
+    constructor(_class: number = 1, musicality: number = null) {
         super();
         this.cluster = _class;
         this.musicality = musicality;
@@ -41,9 +41,4 @@ export class StudentsList extends Pagination {
         super();
         this.data = []
     }
-}
-
-export interface Pair {
-    text: number,
-    value: number
 }
