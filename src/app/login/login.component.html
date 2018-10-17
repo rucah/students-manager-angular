@@ -15,9 +15,9 @@
         <mat-error>{{getErrorMessage(this.loginForm.get('username'))}}</mat-error>
       </mat-form-field>
       <mat-form-field class="loginFormField">
-        <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Senha" 
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="Senha" 
           autocomplete="username" required />
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
         <mat-error>{{getErrorMessage(this.loginForm.get('password'))}}</mat-error>
       </mat-form-field>
     <div class="button-row">
@@ -26,3 +26,5 @@
     </form>
   </mat-card-content>
 </mat-card>
+
+<loading-spinner [visible]="isLoading"></loading-spinner>

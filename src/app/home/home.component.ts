@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { MatDialog, MatPaginatorIntl, MatTableDataSource, 
   PageEvent } from '@angular/material';
 import { Modal } from '../modal/modal.component';
@@ -6,18 +6,22 @@ import { Student, StudentFilter, StudentsList, Pair } from './home.model';
 import { HomeService } from './home.service';
 
 @Component({
-  selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'contacts', 'musicality', 'class', 'action'];
-  dataSource = new MatTableDataSource<Student>();
+  @Output() displayedColumns: string[] = ['name', 'contacts', 'musicality', 'class', 'action'];
+  @Output() dataSource = new MatTableDataSource<Student>();
   filter: StudentFilter;
   modal: Modal;
   students: StudentsList;
   classes: Pair[];
+
+  @Output() isLoading: boolean = false;
+
+  @Output() isClassesLoading: boolean = false;
+  @Output() isSearchLoading: boolean = false;
 
   constructor(private homeService: HomeService, matDialog: MatDialog, private matPaginatorIntl: MatPaginatorIntl) {
    
@@ -36,18 +40,17 @@ export class HomeComponent implements OnInit {
 
   applySearch() {
     try {
+      this.isSearchLoading = true;
       this.homeService.getStudents(this.filter).subscribe((students) => {
         this.students = students;
         this.updateTableData(students);
-      },(error) => { throw error; });
+      },
+      (error) => { throw error; },
+      () => { this.isSearchLoading = false; });
     } catch(error) {      
       this.modal.alert('Ocorreu um erro!', 'Não foi possível processar o pedido!');
       console.error('[Home.getSudents] ', error);
     }
-  }
-
-  updateTableData(students: StudentsList) {
-    this.dataSource.data = students.data;
   }
 
   onPageChange(pageEvent: PageEvent) {
@@ -59,12 +62,20 @@ export class HomeComponent implements OnInit {
   editStudent(id: number) {
     console.log("TODO -> " , id);
   }
+  
+  private updateTableData(students: StudentsList) {
+    this.dataSource.data = students.data;
+  }
 
-  getClasses(): void {
+  private getClasses(): void {
     try {
+      this.isClassesLoading = true;
+      
       this.homeService.getClasses().subscribe((classes) => {
       this.classes = classes;
-      },(error) => { throw error; });
+      }, 
+      (error) => { throw error; },
+      () => { this.isClassesLoading = false; });
     } catch(error) {      
       this.modal.alert('Ocorreu um erro!', 'Não foi possível processar o pedido!');
       console.error('[Home.getClasses] ', error);

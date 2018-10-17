@@ -11,6 +11,7 @@ describe('HomeService', () => {
         "page": 1,
         "length": 32,
         "pageSize": 10,
+        "cluster": ["1", "2"],
         "data": [
             {
                 "id": 1,
@@ -90,7 +91,7 @@ describe('HomeService', () => {
 
     it('should return an Observable<StudentsList>', () => {
         const filter = new StudentFilter();
-        filter.cluster = 1;
+        filter.cluster = ['1', '2'];
         filter.page = 1
         filter.pageSize = 10;
 
@@ -101,7 +102,7 @@ describe('HomeService', () => {
         });
 
         // set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(`${config.serverUrl}/students?cluster=1&length=0&musicality&page=1&pageSize=10`);
+        const req = httpMock.expectOne(`${config.serverUrl}/students?cluster=1&cluster=2&length=0&musicality&page=1&pageSize=10`);
 
         expect(req.request.method).toBe("GET");
         expect(req.cancelled).toBeFalsy();
@@ -120,7 +121,7 @@ describe('HomeService', () => {
                 expect(data).toEqual(mockResponse);
             });
 
-            const req = httpMock.expectOne(`${config.serverUrl}/students?cluster=1&length=0&musicality&page=0&pageSize=0`);
+            const req = httpMock.expectOne(`${config.serverUrl}/students?cluster&length=0&musicality&page=0&pageSize=0`);
 
             expect(req.request.method).toBe("GET");
             expect(req.cancelled).toBeFalsy();

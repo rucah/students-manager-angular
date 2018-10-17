@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { ModalComponent } from './modal/modal.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 
 const appRoutes = [
@@ -35,6 +36,7 @@ const angularMaterialItems = [
     ModalComponent,
     LoginComponent,
     HomeComponent,
+    LoadingSpinnerComponent,
   ],
   entryComponents: [
     ModalComponent,
