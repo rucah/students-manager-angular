@@ -7,12 +7,11 @@ import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
 class LoginForm {
-  
+
   constructor(public username: string = '', public password: string = '') {};
 };
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -21,7 +20,8 @@ export class LoginComponent implements OnInit {
   login: LoginForm;
   loginForm: FormGroup;
   modal: Modal;
-  hide: boolean = true;
+  hidePassword: boolean = true;
+  isLoading: boolean = false;
 
   constructor(private loginService: LoginService, public matdialog: MatDialog, private router: Router) { 
     this.login =  new LoginForm();
@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if(this.loginForm.valid) {
+      this.startLoading();
       const obs = this.loginService.login(this.loginForm.get('username').value, this.loginForm.get('password').value);
 
       obs.subscribe((data) => {
@@ -52,13 +53,13 @@ export class LoginComponent implements OnInit {
         if(data['login']) {
           this.router.navigate(['/home']);
         } else {
-          this.modal.alert('Erro!', 'Utilizador ou senha inválidos!');
+          this.modal.alert('Login inválido!', 'Utilizador ou senha inválidos!');
         }
       },(error) => {
           this.modal.alert('Ocorreu um erro!', 'Ocorreu um erro a processar o pedido.' +
-            'Por verifique ligação à rede ou tente mais tarde' );
+            'Por favor verifique ligação à rede ou tente mais tarde' );
             console.error('[Login.onSubmit] ', error);
-      });
+      }, () => this.isComplete());
     }
   }
 
@@ -77,5 +78,13 @@ export class LoginComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  private startLoading() {
+    this.isLoading = true;
+  }
+
+  private isComplete() {
+    this.isLoading = false;
   }
 }

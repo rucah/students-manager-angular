@@ -59,6 +59,9 @@
       (page)="onPageChange($event)" ></mat-paginator>
   </mat-card-content>
   <ng-template #elseBlock>
-    <div class="noResults">Sem resultados para os critérios seleccionados!</div>
+    <div *ngIf ="!isClassesLoading && !isSearchLoading"
+     class="noResults">Sem resultados para os critérios seleccionados!</div>
   </ng-template>
 </mat-card>
+
+<loading-spinner [visible]="isClassesLoading || isSearchLoading"></loading-spinner>
