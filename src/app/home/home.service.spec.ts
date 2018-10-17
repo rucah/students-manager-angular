@@ -6,7 +6,7 @@ import { config } from '../configs/config';
 import { StudentFilter, StudentsList } from './home.model';
 import { HomeService } from './home.service';
 
-describe('HomeService', () => {
+fdescribe('HomeService', () => {
     const mockResponse = {
         "page": 1,
         "length": 32,
@@ -38,95 +38,87 @@ describe('HomeService', () => {
         ]
     };
 
-    let injector: TestBed;
-    let httpClient: HttpClient;
+    fdescribe('With TestBed option', () => {
+        let injector: TestBed;
+        let httpClient: HttpClient;
 
-    let httpMock: HttpTestingController;
-    let homeService: HomeService;
+        let httpMock: HttpTestingController;
+        let homeService: HomeService;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [
-                HomeService
-            ]
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [HttpClientTestingModule],
+                providers: [
+                    HomeService
+                ]
+            });
+    
+            // httpClient = TestBed.get(HttpClient);
+            httpMock = TestBed.get(HttpTestingController);
+            homeService = TestBed.get(HomeService);
         });
 
-        // Inject the http service and test controller for each test
-        injector = getTestBed();
-        // httpClient = TestBed.get(HttpClient);
-        httpMock = TestBed.get(HttpTestingController);
-        homeService = TestBed.get(HomeService);
-    });
-
-    afterEach(() => {
-        httpMock.verify();
-    });
-
-    // xit('should return an Observable<StudentsList>', inject([HomeService, XHRBackend], (homeService, mockBackend) => {
-
-
-    //     mockBackend.connections.subscribe((connection) => {
-    //         connection.mockRespond(new Response(new ResponseOptions({
-    //             body: JSON.stringify(mockResponse)
-    //           })));
-    //     });
-    //     const filter = new StudentFilter();
-    //     filter.cluster = 1;
-    //     filter.page = 1
-    //     filter.pageSize = 10;
-
-    //     homeService.getStudents(filter).subscribe((data) => {
-    //         console.log('>>>DATA', data);
-    //         expect(data).toBe(false);
-    //     });
-    //     // const req = httpMock.expectOne(`http://replace.with.api/anything/1`, 'call to api');
-    //     // expect(req.request.method).toBe('GET');
-    // }));
-
-
-    it('should not immediately connect to the server', () => {
-        httpMock.expectNone({});
-    });
-
-    it('should return an Observable<StudentsList>', () => {
-        const filter = new StudentFilter();
-        filter.cluster = ['1', '2'];
-        filter.page = 1
-        filter.pageSize = 10;
-
-        let studentsList = mockResponse;
-        // call the service
-        homeService.getStudents(filter).subscribe((data) => {
-            expect(data).toBe(mockResponse);
+        afterEach(() => {
+            httpMock.verify();
         });
 
-        // set the expectations for the HttpClient mock
-        const req = httpMock.expectOne(`${config.serverUrl}/students?cluster=1&cluster=2&length=0&musicality&page=1&pageSize=10`);
+        it('should not immediately connect to the server', () => {
+            httpMock.expectNone({});
+        });
 
-        expect(req.request.method).toBe("GET");
-        expect(req.cancelled).toBeFalsy();
-        expect(req.request.responseType).toEqual('json');
+        it('should return an Observable<StudentsList>', () => {
+            const filter = new StudentFilter();
+            filter.cluster = ['1', '2'];
+            filter.page = 1
+            filter.pageSize = 10;
 
-        // set the fake data to be returned by the mock
-        req.flush(mockResponse);
-    });
-
-    //inject an instance of the HttpTestingController in our test
-    it('should return an Observable<StudentsList> method 2', inject(
-        [HttpTestingController, HomeService],
-        (httpMock: HttpTestingController, service: HomeService) => {
-
-            service.getStudents(new StudentFilter()).subscribe((data: StudentsList) => {
-                expect(data).toEqual(mockResponse);
+            let studentsList = mockResponse;
+            // call the service
+            homeService.getStudents(filter).subscribe((data) => {
+                expect(data).toBe(mockResponse);
             });
 
-            const req = httpMock.expectOne(`${config.serverUrl}/students?cluster&length=0&musicality&page=0&pageSize=0`);
+            // set the expectations for the HttpClient mock
+            const req = httpMock.expectOne(`${config.serverUrl}/students?cluster=1&cluster=2&length=0&musicality&page=1&pageSize=10`);
 
             expect(req.request.method).toBe("GET");
             expect(req.cancelled).toBeFalsy();
             expect(req.request.responseType).toEqual('json');
 
+            // set the fake data to be returned by the mock
             req.flush(mockResponse);
+        });
+    });
+
+    fdescribe('With injection option', () => {
+
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [HttpClientTestingModule],
+                providers: [
+                    HomeService
+                ]
+            });
+        });
+
+        //inject an instance of the HttpTestingController in our test
+        it('should return an Observable<StudentsList> method 2', inject(
+            [HttpTestingController, HomeService],
+            (httpMock: HttpTestingController, service: HomeService) => {
+
+                service.getStudents(new StudentFilter()).subscribe((data: StudentsList) => {
+                    expect(data).toEqual(mockResponse);
+                });
+
+                const req = httpMock.expectOne(`${config.serverUrl}/students?cluster&length=0&musicality&page=0&pageSize=0`);
+
+                expect(req.request.method).toBe("GET");
+                expect(req.cancelled).toBeFalsy();
+                expect(req.request.responseType).toEqual('json');
+
+                req.flush(mockResponse);
+                // Guarantees thar we only get exactly what is expected
+                httpMock.verify();
         }));
+    });
 });
